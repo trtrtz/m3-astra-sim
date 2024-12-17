@@ -1,4 +1,3 @@
-# m3-astra-sim
 # Project Directories
 
 ## 1. Scratch Directory
