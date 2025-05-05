@@ -1,0 +1,52 @@
+# YAML config for dataset, training, and model parameters
+
+# Dataset parameters
+dataset:
+  n_flows_list: [448] # 数据流数量的列表，用于生成不同数量的数据流以进行训练
+  n_hosts_list: [8] # 主机数量的列表，用于生成不同规模的网络拓扑
+  shard: 0 # 数据分片索引，指定当前处理的数据分片
+  shard_list: [0,100,100] # 数据分片范围，[起始索引，结束索引，每个分片的数据量]
+  sample_list: [0,1,1] # 样本范围，[起始索引，结束索引，样本数量]
+  lr: 10 # 学习率调整参数，可能用于数据生成的某种内部计算
+  bucket_thold: 1 # 桶（bucket）的阈值，用于控制数据分布，可能与数据聚合有关
+  train_frac: 0.9 # 训练集比例，表示数据集中用于训练的数据部分
+  enable_context: True # 是否启用上下文信息，用于增强模型输入特征
+  topo_type: "_topo-pl-x_" # 网络拓扑类型，定义用于生成数据的网络结构
+  n_params: 19 # 数据生成时使用的参数数量，可能与特征维度或生成规则有关
+
+# Model parameters
+model:
+  model_name: "transformer" # 模型类型，这里指定为 Transformer 模型
+  n_layer: 4 # 模型的层数，定义 Transformer 的编码器或解码器层数
+  n_head: 4 # 注意力头数，用于多头注意力机制
+  n_embd: 576 # 嵌入向量的维度，用于输入和输出的特征表示
+  block_size: 16 # Transformer 模型的块大小，定义序列的最大长度
+  vocab_size: 200 # 词汇表大小，定义可用的输入/输出词汇范围
+  dropout: 0.2 # Dropout 比例，用于防止过拟合
+  compile: False # 是否编译模型（可能是某些框架中的特定选项，如 PyTorch 的 TorchScript）
+  loss_fn_type: "l1" # 损失函数类型，这里指定为 L1 损失（绝对误差）
+  hidden_dims: [512,512] # 隐藏层的维度，定义模型的内部特征表示大小
+  enable_position: True # 是否启用位置编码，用于表示序列中元素的顺序
+
+# Training parameters
+training:
+  gpu: [0] # 指定用于训练的 GPU 索引，支持多卡训练
+  n_epochs: 5 # 训练的总轮数
+  batch_size: 1 # 批量大小，每次训练迭代的样本数量
+  learning_rate: 0.0001 # 初始学习率，用于优化器
+  betas: [0.9, 0.95] # Adam 优化器的 beta 参数，控制一阶和二阶动量
+  weight_decay: 0.02 # 权重衰减，用于正则化模型以防止过拟合
+  num_workers: 5 # 数据加载器的工作线程数，用于并行加载数据
+  enable_val: False # 是否启用验证集，False 表示仅训练无验证
+  enable_dist: False # 是否启用分布式训练
+  enable_masked_loss: True # 是否启用掩码损失，可能用于处理序列的填充部分
+  enable_weighted_loss: False # 是否启用加权损失，用于调整特定样本的重要性
+  enable_log: False # 是否启用日志记录，用于跟踪训练过程
+
+#修改对应路径即可
+others:
+  dir_data_input: "/users/tingzhou/m3/data/astra_sim/ns3/output"
+  dir_train: "/users/tingzhou/m3/astra_sim_api/version_1"
+  output_dir: "/users/tingzhou/m3/astra_sim_api/inference_output"   #随便选一个自己定义的路径就行！
+  model_id: ""     #默认为空
+
